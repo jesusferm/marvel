@@ -33,8 +33,8 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
-$routes->get('/marvel/home', 'Home::home');
-$routes->get('/marvel/colaborators/(:any)', 'Home::colaborators/$');
+$routes->get('/home', 'Home::home');
+$routes->get('/marvel/colaborators/(:any)', 'Home::colaborators/$1');
 $routes->resource('products');
 
 /*

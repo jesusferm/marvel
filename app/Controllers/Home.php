@@ -25,6 +25,9 @@ class Home extends BaseController
 	 */
 	public function colaborators($person)
 	{
-		return view('home');
+		$data['title'] = 'Personaje - '.$person;
+		$data['char'] = $person == 'ironman'?1009368: ($person=='capamerica'?1009220: 0);
+
+		return view('home', $data);
 	}
 }
