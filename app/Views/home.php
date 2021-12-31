@@ -46,19 +46,19 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<h3>Access</h3>
+				
 				<?php
 					$baseUrl 	= 'https://gateway.marvel.com:443/v1/public/characters/';
 					$apiKey 	= '6810f9d29ae71c4ca417e027d73f4949';
 					$privateKey = '290c908b436c25f243a429801092a1b0fd01445e';
 					$limit 		= '100';
-					$date 		= new DateTime();
-					$ts 		= $date->getTimestamp();
+					//$date 		= new DateTime();
+					//$ts 		= $date->getTimestamp();
+					$ts 		= new Time('now');
 					$hash 		= md5($ts.$privateKey.$apiKey);
 
 					$url 		= "${baseUrl}?nameStartsWith=ironman&limit=${limit}&ts=${ts}&apikey=${apiKey}&hash=${hash}";
 
-					echo $char.'<br>';
 					$ch = curl_init();
 					//http://gateway.marvel.com/v1/public/comics?ts=1&apikey=1234&hash=ffd275c5130566a2916217b101f26150
 					curl_setopt($ch, CURLOPT_URL, "https://gateway.marvel.com:443/v1/public/characters/".$char."?ts=".$ts."&apikey=".$apiKey."&hash=".$hash);
@@ -66,7 +66,47 @@
 					$res = curl_exec($ch);
 					curl_close($ch);
 
-					print_r($res);
+					/*print_r($res);
+
+					echo '<br><br>';*/
+
+					$data = json_decode( file_get_contents("https://gateway.marvel.com:443/v1/public/characters/".$char."?ts=".$ts."&apikey=".$apiKey."&hash=".$hash), true );
+					//$data['data']['results'][0]['id']
+				?>
+				<h3>
+					<?php
+					echo $char.' - Personaje: '.$data['data']['results'][0]['name'];
+					?>
+				</h3>
+
+				<?php
+				$comics = json_decode(file_get_contents("https://gateway.marvel.com:443/v1/public/characters/".$char."/comics?format=comic&formatType=comic&ts=".$ts."&apikey=".$apiKey."&hash=".$hash), true );
+
+				
+				
+				if ($comics['data']['results']) {
+					echo 'Editors : [';
+					foreach ($comics['data']['results'] as $creator) {
+						//print_r($creator['creators']);
+						
+						foreach ($creator['creators']['items'] as $item) {
+							if($item['role']=='editor'){
+								echo $item['name'].',';
+							}
+						}
+					}
+					echo '],<br>Writers : [';
+					foreach ($comics['data']['results'] as $creator) {
+						//print_r($creator['creators']);
+						
+						foreach ($creator['creators']['items'] as $item) {
+							if($item['role']=='writer'){
+								echo $item['name'].',';
+							}
+						}
+					}
+					echo ']';
+				}
 				?>
 			</div>
 		</div>
