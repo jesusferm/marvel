@@ -46,14 +46,14 @@ class Home extends BaseController
 		if ($comics['data']['results']) {
 			foreach ($comics['data']['results'] as $creator) {
 				foreach ($creator['creators']['items'] as $item) {
-					if($item['role']=='editor' and !in_array($item['name'], $data['Editors'])){
+					if($item['role']=='editor' and !in_array($item['name'], $data['Editors']) ){
 						$data['Editors'][] = $item['name'];
 					}
 				}
 			}
 			foreach ($comics['data']['results'] as $creator) {
 				foreach ($creator['creators']['items'] as $item) {
-					if($item['role']=='writer' and !in_array($item['name'], $data['Writers'])){
+					if($item['role']=='writer' and !in_array($item['name'], $data['Writers']) ){
 						$data['Writers'][] = $item['name'];
 					}
 				}
