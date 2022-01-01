@@ -41,19 +41,19 @@ class Home extends BaseController
 		$comics = json_decode(file_get_contents("https://gateway.marvel.com:443/v1/public/characters/".$char."/comics?format=comic&formatType=comic&ts=".$ts."&apikey=".$apiKey."&hash=".$hash), true );
 
 				
-		//$data['Editors'] = "";
-		//$data['Writers'] = "";
+		$data['Editors'] = array();
+		$data['Writers'] = array();
 		if ($comics['data']['results']) {
 			foreach ($comics['data']['results'] as $creator) {
 				foreach ($creator['creators']['items'] as $item) {
-					if($item['role']=='editor'){
+					if($item['role']=='editor' and !in_array($item['name'], $data['Editors'])){
 						$data['Editors'][] = $item['name'];
 					}
 				}
 			}
 			foreach ($comics['data']['results'] as $creator) {
 				foreach ($creator['creators']['items'] as $item) {
-					if($item['role']=='writer'){
+					if($item['role']=='writer' and !in_array($item['name'], $data['Writers'])){
 						$data['Writers'][] = $item['name'];
 					}
 				}
