@@ -67,4 +67,11 @@ class Home extends BaseController
 		}
 	
 	}
+
+	public function characters($person)
+	{
+		$data['title'] = 'Personaje - '.$person;
+		$data['char'] = $person == 'ironman'?1009368: ($person=='capamerica'?1009220: 0);
+		return view('characters', $data);
+	}
 }
