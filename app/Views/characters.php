@@ -46,7 +46,6 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				
 				<?php
 					$baseUrl 	= 'https://gateway.marvel.com:443/v1/public/characters/';
 					$apiKey 	= '6810f9d29ae71c4ca417e027d73f4949';
@@ -58,12 +57,12 @@
 
 					$url 		= "${baseUrl}?nameStartsWith=ironman&limit=${limit}&ts=${ts}&apikey=${apiKey}&hash=${hash}";
 
-					$ch = curl_init();
+					/*$ch = curl_init();*/
 					//http://gateway.marvel.com/v1/public/comics?ts=1&apikey=1234&hash=ffd275c5130566a2916217b101f26150
-					curl_setopt($ch, CURLOPT_URL, "https://gateway.marvel.com:443/v1/public/characters/".$char."?ts=".$ts."&apikey=".$apiKey."&hash=".$hash);
+					/*curl_setopt($ch, CURLOPT_URL, "https://gateway.marvel.com:443/v1/public/characters/".$char."?ts=".$ts."&apikey=".$apiKey."&hash=".$hash);
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 					$res = curl_exec($ch);
-					curl_close($ch);
+					curl_close($ch);*/
 
 					/*print_r($res);
 
@@ -74,7 +73,8 @@
 				?>
 				<h3>
 					<?php
-					echo $char.' - Personaje: '.$data['data']['results'][0]['name'];
+					$super = $data['data']['results'][0]['name'];
+					echo $char.' - Personaje: '.$super;
 					?>
 				</h3>
 
@@ -82,18 +82,23 @@
 				$comics = json_decode(file_get_contents("https://gateway.marvel.com:443/v1/public/characters/".$char."/comics?format=comic&formatType=comic&ts=".$ts."&apikey=".$apiKey."&hash=".$hash), true );
 
 				
-				
+				$characters = array();
 				if ($comics['data']['results']) {
 					//echo 'Editors : [';
 					foreach ($comics['data']['results'] as $comic) {
 						//print_r($creator['creators']);
-						echo $comic['title'].'<br>';
+						//echo $comic['title'].'<br>';
+						//print_r($comic['characters']['items']);
+						
 						//print_r($comic['characters']['items']);
 
 						foreach ($comic['characters']['items'] as $item) {
-							echo $item['name'].',';
+							//echo $item['name'].',';
+							if ($super!=$item['name'] && !in_array($item['name'], $characters)) {
+								$characters[] = $item['name'];
+							}
 						}
-						echo '<br><br>';
+						//echo '<br><br>';
 					}
 					/*echo '],<br>Writers : [';
 					foreach ($comics['data']['results'] as $creator) {
@@ -105,6 +110,18 @@
 						}
 					}
 					echo ']';*/
+				}
+				//print_r($characters);
+				foreach ($characters as $char) {
+					echo $char.':<br>';
+					foreach ($comics['data']['results'] as $comic) {
+						foreach ($comic['characters']['items'] as $item) {
+							if ($char==$item['name']) {
+								echo $comic['title'].',';
+							}
+						}
+					}
+					echo '<br><br>';
 				}
 				?>
 			</div>

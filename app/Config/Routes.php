@@ -38,6 +38,7 @@ $routes->get('/marvel/colaborators/(:any)', 'Home::colaborators/$1');
 $routes->resource('products');
 
 $routes->get('/marvel/characters/(:any)', 'Home::characters/$1');
+$routes->get('/marvel/chars/(:any)', 'Home::chars/$1');
 
 /*
  * --------------------------------------------------------------------
