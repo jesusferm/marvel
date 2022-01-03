@@ -9,6 +9,8 @@
 
 ## Pruebas realizadas en Postman
 
+	cd /opt/lampp/htdocs
+	git clone https://github.com/jesusferm/marvel.git
 	cd marvel
 	php spark serve
 
