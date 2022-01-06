@@ -17,7 +17,14 @@ class Home extends BaseController
 
 	public function home()
 	{
-		return view('home');
+		$data['title'] = 'Index';
+		return view('bs-v', $data);
+	}
+
+	public function style()
+	{
+		$data['title'] = 'Style';
+		return view('style2', $data);
 	}
 
 	/**
@@ -34,7 +41,7 @@ class Home extends BaseController
 		$limit 		= '100';
 		$ts 		= 1929929;
 		$hash 		= md5($ts.$privateKey.$apiKey);
-		$comics = json_decode(file_get_contents("https://gateway.marvel.com:443/v1/public/characters/".$char."/comics?format=comic&formatType=comic&ts=".$ts."&apikey=".$apiKey."&hash=".$hash), true );
+		$comics 	= json_decode(file_get_contents("https://gateway.marvel.com:443/v1/public/characters/".$char."/comics?format=comic&formatType=comic&ts=".$ts."&apikey=".$apiKey."&hash=".$hash), true);
 		$data['Editors'] = array();
 		$data['Writers'] = array();
 		if ($comics['data']['results']) {
@@ -113,7 +120,6 @@ class Home extends BaseController
 									 "comics"=> $cms
 									];
 		}
-
 		if($data){
 			return $this->respond($data);
 		}else{

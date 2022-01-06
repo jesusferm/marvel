@@ -40,6 +40,9 @@ $routes->resource('products');
 $routes->get('/marvel/characters/(:any)', 'Home::characters/$1');
 $routes->get('/marvel/chars/(:any)', 'Home::chars/$1');
 
+
+$routes->get('/style', 'Home::style');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
